@@ -44,3 +44,6 @@ LLM評価手順です。
   url          = {https://github.com/matsuolab/ucllm_nedo_prod}
 }
 ```
+
+# Acknowledgement
+https://github.com/hatakeyama-llm-team/llm: ./load_datasetthe we built upon. Provided under the MIT license. Thanks for the authors.
