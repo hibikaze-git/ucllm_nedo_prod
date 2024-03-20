@@ -1,7 +1,7 @@
 # Appends a path to import python scripts that are in other directories.
 import os
 import sys
-sys.path.append(os.path.join(os.environ["HOME"], "ucllm_nedo_dev/train/scripts/common/"))
+sys.path.append(os.path.join(os.environ["HOME"], "ucllm_nedo_prod/train/scripts/common/"))
 
 import argparse
 import sentencepiece as spm
@@ -17,6 +17,7 @@ def parse_arguments():
     parser.add_argument("--model_type", type=str, default="unigram", choices=["unigram", "bpe", "word", "char"])
     parser.add_argument("--num_threads", type=int, default=16)
     parser.add_argument("--train_extremely_large_corpus", type=bool, default=True)
+    parser.add_argument("--output_dir", type=str, required=True)
     args = parser.parse_args()
     print(f"{args = }")
     return args
@@ -49,6 +50,14 @@ def main():
         allow_whitespace_only_pieces=True,
         remove_extra_whitespaces=False,
     )
+
+    if os.path.exists(args.output_dir) is False:
+        os.makedirs(args.output_dir)
+
+    os.rename(f"{args.model_prefix}.model",
+              f"{args.output_dir}/{args.model_prefix}.model")
+    os.rename(f"{args.model_prefix}.vocab",
+              f"{args.output_dir}/{args.model_prefix}.vocab")
 
 
 if __name__ == "__main__":
