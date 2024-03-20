@@ -65,7 +65,7 @@ model_size=0.084
 num_layers=8
 hidden_size=768
 num_attn_heads=12
-global_batch_size=256
+global_batch_size=128
 lr=6.0e-4
 min_lr=1.0e-6
 init_std=0.02
@@ -206,7 +206,7 @@ dp_size=$(( ${num_gpus} / ${pp_size} / ${mp_size} ))
 ## Make sure that batch_size <= global_batch_size*pp_size*mp_size/num_gpus
 ## Reduce it manually if GPU OOM
 #batch_size=$(( ${global_batch_size} / ${dp_size} ))
-batch_size=8
+batch_size=4
 ###############################################################################
 ### Misc configs
 log_interval=10
