@@ -4,9 +4,9 @@ set -e
 echo ""
 
 # Stores the directory paths as variables.
-ucllm_nedo_dev_train_dir="${HOME}/ucllm_nedo_dev/train"
-megatron_deepspeed_dir="${ucllm_nedo_dev_train_dir}/Megatron-DeepSpeed"
-echo "ucllm_nedo_dev_train_dir = ${ucllm_nedo_dev_train_dir}"
+ucllm_nedo_prod_train_dir="${HOME}/ucllm_nedo_prod/train"
+megatron_deepspeed_dir="${ucllm_nedo_prod_train_dir}/Megatron-DeepSpeed"
+echo "ucllm_nedo_prod_train_dir = ${ucllm_nedo_prod_train_dir}"
 echo "megatron_deepspeed_dir = ${megatron_deepspeed_dir}"
 echo ""
 
@@ -142,7 +142,7 @@ init_std=0.02
 ###############################################################################
 ### Training duration configs
 ## The main termination condition, original GPT-3 paper trains for 300B tokens.
-train_tokens_in_billion=300
+train_tokens_in_billion=1
 train_tokens=$((${train_tokens_in_billion} * 1000 * 1000 * 1000))
 
 ## train_samples is another termination condition and also affect the number of 
@@ -235,20 +235,10 @@ num_workers=0
 
 # If either arxiv_text_document.bin or arxiv_text_document.idx doesn't exist yet,
 # then downloads arxiv.jsonl and preprocesses the data.
-data_path="${megatron_deepspeed_dir}/dataset/arxiv_text_document"
+data_path="/home/ext_hrk_ymgch_gmail_com/ucllm_nedo_prod/train/scripts/step1_train_tokenizer/wiki_65k_vocab_text_document"
 if [ ! -f "${data_path}.bin" ] || [ ! -f "${data_path}.idx" ]; then
-    echo "Either ${data_path}.bin or ${data_path}.idx doesn't exist yet, so download arxiv.jsonl and preprocess the data."
-    wget https://data.together.xyz/redpajama-data-1T/v1.0.0/arxiv/arxiv_024de5df-1b7f-447c-8c3a-51407d8d6732.jsonl \
-        --directory-prefix ${megatron_deepspeed_dir}/dataset/
-    mv ${megatron_deepspeed_dir}/dataset/arxiv_024de5df-1b7f-447c-8c3a-51407d8d6732.jsonl ${megatron_deepspeed_dir}/dataset/arxiv.jsonl
-    python ${megatron_deepspeed_dir}/tools/preprocess_data.py \
-        --tokenizer-type SentencePieceTokenizer \
-        --tokenizer-model ${input_tokenizer_file} \
-        --input ${megatron_deepspeed_dir}/dataset/arxiv.jsonl \
-        --output-prefix ${megatron_deepspeed_dir}/dataset/arxiv \
-        --dataset-impl mmap \
-        --workers $(grep -c ^processor /proc/cpuinfo) \
-        --append-eod
+    echo "Either ${data_path}.bin or ${data_path}.idx doesn't exist yet."
+    exit error
 else
     echo "Both ${data_path}.bin and ${data_path}.idx already exist."
 fi
