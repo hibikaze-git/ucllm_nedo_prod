@@ -4,9 +4,9 @@ set -e
 echo ""
 
 # Stores the directory paths as variables.
-ucllm_nedo_dev_train_dir="${HOME}/ucllm_nedo_dev/train"
-megatron_deepspeed_dir="${ucllm_nedo_dev_train_dir}/Megatron-DeepSpeed"
-echo "ucllm_nedo_dev_train_dir = ${ucllm_nedo_dev_train_dir}"
+ucllm_nedo_prod_train_dir="${HOME}/ucllm_nedo_prod/train"
+megatron_deepspeed_dir="${ucllm_nedo_prod_train_dir}/Megatron-DeepSpeed"
+echo "ucllm_nedo_prod_train_dir = ${ucllm_nedo_prod_train_dir}"
 echo "megatron_deepspeed_dir = ${megatron_deepspeed_dir}"
 echo ""
 
@@ -384,7 +384,7 @@ if [[ $iteration -gt 0 ]]; then
     ds_ssh "echo $iteration_2 > $iteration_file_2"
 fi
 
-deepspeed ${megatron_deepspeed_dir}/pretrain_gpt.py \
+deepspeed --master_port 29550 ${megatron_deepspeed_dir}/pretrain_gpt.py \
     ${megatron_options} \
     ${data_options} \
     ${deepspeed_options} \
