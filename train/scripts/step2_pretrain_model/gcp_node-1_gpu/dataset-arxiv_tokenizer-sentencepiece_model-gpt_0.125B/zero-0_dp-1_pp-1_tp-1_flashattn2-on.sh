@@ -61,8 +61,8 @@ seq_len=2048
 ## provide better zero-shot eval results.
 
 ## GPT-3 Small 125M
-model_size=0.125
-num_layers=12
+model_size=0.084
+num_layers=8
 hidden_size=768
 num_attn_heads=12
 global_batch_size=256
@@ -206,7 +206,7 @@ dp_size=$(( ${num_gpus} / ${pp_size} / ${mp_size} ))
 ## Make sure that batch_size <= global_batch_size*pp_size*mp_size/num_gpus
 ## Reduce it manually if GPU OOM
 #batch_size=$(( ${global_batch_size} / ${dp_size} ))
-batch_size=1
+batch_size=8
 ###############################################################################
 ### Misc configs
 log_interval=10

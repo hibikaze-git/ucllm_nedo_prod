@@ -61,8 +61,8 @@ seq_len=2048
 ## provide better zero-shot eval results.
 
 ## GPT-3 Small 125M
-model_size=0.042
-num_layers=4
+model_size=0.084
+num_layers=8
 hidden_size=768
 num_attn_heads=12
 global_batch_size=256
