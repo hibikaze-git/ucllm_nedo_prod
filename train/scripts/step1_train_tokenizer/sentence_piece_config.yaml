@@ -1,5 +1,7 @@
 input: /home/ucllm_nedo_prod/data_management/output/merged/merged.jsonl
+#input: /persistentshare/storage/team_nakamura/yamaguchi/data/text/0313wiki.jsonl
 output_dir: /home/ucllm_nedo_prod/train/scripts/step1_train_tokenizer/output_model/wiki_65k_vocab/
+#output_dir: /home/ext_hrk_ymgch_gmail_com/ucllm_nedo_prod/train/scripts/step1_train_tokenizer/wiki_65k_vocab
 vocab_size: 65000
 num_threads: 32
 model_prefix: tokenizer

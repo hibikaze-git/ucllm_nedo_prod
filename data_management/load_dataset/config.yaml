@@ -1,4 +1,5 @@
 output_path: ./data/0313wiki.jsonl # output path
+#output_path: /persistentshare/storage/team_nakamura/yamaguchi/data/text/0313wiki.jsonl
 #max_records: 1000000 #1 datasetあたりの最大件数｡debug時は小さくする
 max_records: 10000 #1 datasetあたりの最大件数｡debug時は小さくする
 #max_records: 100000 #1 datasetあたりの最大件数｡debug時は小さくする
