@@ -1,5 +1,15 @@
 #!/bin/bash
 
+#SBATCH --partition=g2
+#SBATCH --time=06:00:00
+#SBATCH --nodes=2
+#SBATCH --job-name=gpt_0.125B
+#SBATCH --output=dataset-arxiv_tokenizer-sentencepiece_model-gpt_0.125B.out
+#SBATCH --gpus-per-node=8
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate .venv
+
 set -e
 echo ""
 
@@ -393,8 +403,6 @@ for node in $nodes
 do
   gpu_count=$(ssh ${node} "nvidia-smi --query-gpu=name --format=csv,noheader | wc -l")
   echo "${node} slots=${gpu_count}"
-  ssh $node "source ~/.bashrc"
-  ssh $node 'source ~/miniconda3/etc/profile.d/conda.sh && conda activate .venv'
 done > "${hostfile}"
 
 echo "hostfile = ${hostfile}"

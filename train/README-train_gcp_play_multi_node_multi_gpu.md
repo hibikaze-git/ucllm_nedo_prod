@@ -2,8 +2,8 @@
 
 ## 前提
 
-* 計算環境: g2, 1 node, 2 GPU (Nvidia L4 24GB)
-  * 例: `$ srun --partition=g2 --nodes=2 --gpus-per-node=2 --time=05:00:00 -c 48 --pty bash -i`
+* 計算環境: g2, 2 node, 8 GPU (Nvidia L4 24GB)
+  * 例: `$ srun --partition=g2 --nodes=2 --gpus-per-node=8 --time=05:00:00 -c 48 --pty bash -i`
 
 ## Step 0. 環境構築
 
@@ -46,6 +46,9 @@ $ wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.10.0-1-Linux-x86_
 
 # インストールしたcondaを有効化。
 $ source ~/miniconda3/etc/profile.d/conda.sh
+
+#/.bashrcをバックアップし、SSHが故障した時に/.bashrcを復元する
+cp ~/.bashrc ~/.bashrc.backup
 
 # condaコマンドが使えることを確認。
 $ which conda && echo "====" && conda --version
@@ -209,12 +212,12 @@ $ conda install pytorch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 pytorch-cud
 (.venv) $ bash ./create_ssh_config_file_for_gcp_play_multi_node_multi_gpu.sh
 
 # 親ノードが各ノードにSSHアクセスしたタイミングで各ノードが親ノードと同じ環境になるために、環境構築関連のコマンドを~/.bashrcに追加。
-(.venv) $ echo "source ~/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
-(.venv) $ echo "conda activate .venv" >> ~/.bashrc
+(.venv) $ sed -i '1i conda activate .venv' ~/.bashrc
+(.venv) $ sed -i '1i source ~/miniconda3/etc/profile.d/conda.sh' ~/.bashrc
 
 # マルチノード分散学習をする際に発生し得る "Too many open files" エラーの対策として、1つのプロセスが同時に開くことのできるファイル数の上限 (ファイルディスクリプタ) を引き上げるように設定。
 # https://genzouw.com/entry/2019/05/28/090021/1556/
-(.venv) $ echo "ulimit -n 262144" >> ~/.bashrc
+(.venv) $ sed -i '1i ulimit -n 262144' ~/.bashrc
 ```
 
 ### Step 2-2. 事前学習の実行
