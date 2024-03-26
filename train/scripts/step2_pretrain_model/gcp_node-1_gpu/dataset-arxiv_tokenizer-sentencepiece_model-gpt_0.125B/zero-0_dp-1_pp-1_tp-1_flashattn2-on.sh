@@ -235,7 +235,7 @@ num_workers=0
 
 # If either arxiv_text_document.bin or arxiv_text_document.idx doesn't exist yet,
 # then downloads arxiv.jsonl and preprocesses the data.
-data_path="/home/ext_hrk_ymgch_gmail_com/ucllm_nedo_prod/train/scripts/step1_train_tokenizer/document/wiki_65k_1000000/wiki_65k_1000000_text_document"
+data_path="/persistentshare/storage/team_nakamura/member/yamaguchi/ext_hrk_ymgch_gmail_com/ucllm_nedo_prod/train/scripts/step1_train_tokenizer/document/wiki_65k_1000000/wiki_65k_1000000_text_document"
 if [ ! -f "${data_path}.bin" ] || [ ! -f "${data_path}.idx" ]; then
     echo "Either ${data_path}.bin or ${data_path}.idx doesn't exist yet."
     exit
