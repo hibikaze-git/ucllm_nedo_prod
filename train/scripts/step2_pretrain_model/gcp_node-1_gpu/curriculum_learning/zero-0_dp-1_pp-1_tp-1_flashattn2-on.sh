@@ -3,6 +3,8 @@
 set -e
 echo ""
 
+export HOME=/persistentshare/storage/team_nakamura/member/yamaguchi/ext_hrk_ymgch_gmail_com
+
 # Stores the directory paths as variables.
 ucllm_nedo_prod_train_dir="${HOME}/ucllm_nedo_prod/train"
 megatron_deepspeed_dir="${ucllm_nedo_prod_train_dir}/Megatron-DeepSpeed"
