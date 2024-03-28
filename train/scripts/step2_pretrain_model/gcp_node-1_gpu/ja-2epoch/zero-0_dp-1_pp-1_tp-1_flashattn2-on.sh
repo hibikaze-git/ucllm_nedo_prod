@@ -144,7 +144,7 @@ init_std=0.02
 ###############################################################################
 ### Training duration configs
 ## The main termination condition, original GPT-3 paper trains for 300B tokens.
-train_tokens_in_billion=1
+train_tokens_in_billion=3
 train_tokens=$((${train_tokens_in_billion} * 1000 * 1000 * 1000))
 
 ## train_samples is another termination condition and also affect the number of 
