@@ -107,6 +107,7 @@ class SlimPajama:
                 break
 
             dataset_iterator = load_dataset("json", data_files=file_path, split="train")
+            print(file_path)
 
             for i, data in tqdm(enumerate(dataset_iterator)):
                 set_name = data["meta"]["redpajama_set_name"]
