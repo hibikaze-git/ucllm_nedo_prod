@@ -25,23 +25,30 @@ dataset_dict = {
         "class": WikiJa,
         "n_records": max_records,
         "stage_ratio": [1,],
+        "data_dir": "./hf_dataset/wikipedia-20240101/data",
+        "extension": "parquet"
     },
 
     "culture_x(ja)": {
         "class": CultureX,
         "n_records": max_records,
         "stage_ratio": [1,],
+        "data_dir": "./hf_dataset/CulturaX/ja",
+        "extension": "parquet"
     },
 }
 """
-"""
+
 dataset_dict = {
     "slimPajama": {
         "class": SlimPajama,
         "n_records": max_records,
         "stage_ratio": [1,],
+        "data_dir": "./hf_dataset/slimPajama-627B/train",
+        "extension": "jsonl.zst"
     },
 }
+
 """
 dataset_dict = {
     "wiki(ja)": {
@@ -50,11 +57,13 @@ dataset_dict = {
         "stage_ratio": [
             1,
         ],
+        "data_dir": "./hf_dataset/wikipedia-20240101/data",
+        "extension": "parquet"
     },
 }
+"""
 
 
 distributor = RecordDistributor(dataset_dict)
-distributor.load_datasets()
 
 distributor.write_jsonl(output_path, overwrite=conf["overwrite"])
