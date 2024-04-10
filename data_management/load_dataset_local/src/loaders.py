@@ -122,6 +122,8 @@ class SlimPajama:
                     stop_extract = True
                     break
 
+        print(check_complete)
+
         for text in texts.values():
             text_list += text
 
