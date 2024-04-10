@@ -118,6 +118,7 @@ class SlimPajama:
                         check_complete.append(set_name)
 
                 if set(check_complete) == set(ratio.keys()):
+                    stop_extract = True
                     break
 
         for text in texts.values():
