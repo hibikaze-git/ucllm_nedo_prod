@@ -1,5 +1,7 @@
 """
 jsonlをHFにアップロード
+
+huggingface-cli login
 python upload_hf_hub.py ./data/0313wiki.jsonl hibikaze/upload_test
 """
 
