@@ -15,8 +15,13 @@ make_dir("../../data/text")
 
 with open("config.yaml", "r") as file:
     conf = yaml.safe_load(file)
-output_path = conf["output_path"]
+
+output_filename = conf["output_filename"]
+output_dir = conf["output_dir"]
 max_records = conf["max_records"]
+
+output_path = output_dir + output_filename
+
 print(conf)
 
 """
@@ -66,4 +71,4 @@ dataset_dict = {
 
 distributor = RecordDistributor(dataset_dict)
 
-distributor.write_jsonl(output_path, overwrite=conf["overwrite"])
+distributor.write_jsonl(output_path, output_dir, overwrite=conf["overwrite"], continue_process=conf["continue_process"])

@@ -35,7 +35,7 @@ class RecordDistributor:
             dataset_info["file_paths"] = glob.glob(pattern, recursive=True)
             print(dataset_info["file_paths"][:5])
 
-    def write_jsonl(self, output_path, overwrite=True):
+    def write_jsonl(self, output_path, output_dir, continue_process, overwrite=True):
         if overwrite:
             with open(output_path, "w") as f:
                 f.write("")
@@ -49,7 +49,7 @@ class RecordDistributor:
 
         for name, dataset_info in self.dataset_dict.items():
             print(name)
-            text_list = dataset_info["class"].add_text_list(text_list, dataset_info)
+            text_list = dataset_info["class"].add_text_list(text_list, dataset_info, output_dir, continue_process)
 
         with open(output_path, "a") as f:
             for text in text_list:
