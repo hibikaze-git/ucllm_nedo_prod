@@ -1,11 +1,13 @@
 import json
+import shutil
 
 from datetime import datetime
-from datasets import load_dataset, disable_caching
+from datasets import load_dataset
 from tqdm import tqdm
 
 
-disable_caching()
+def rm_cache():
+    shutil.rmtree("./dataset_cache")
 
 
 class WikiJa:
@@ -17,7 +19,7 @@ class WikiJa:
             if stop_extract:
                 break
 
-            dataset_iterator = load_dataset(dataset_info["extension"], data_files=file_path, split="train")
+            dataset_iterator = load_dataset(dataset_info["extension"], data_files=file_path, split="train", cache_dir="./dataset_cache")
 
             for i, data in tqdm(enumerate(dataset_iterator)):
                 if i == dataset_info["records_per_stage"][0]:
@@ -26,7 +28,7 @@ class WikiJa:
 
                 text_list.append(data["text"])
 
-            dataset_iterator.cleanup_cache_files()
+            rm_cache()
 
         return text_list
 
@@ -40,7 +42,7 @@ class WikiEn:
             if stop_extract:
                 break
 
-            dataset_iterator = load_dataset(dataset_info["extension"], data_files=file_path, split="train")
+            dataset_iterator = load_dataset(dataset_info["extension"], data_files=file_path, split="train", cache_dir="./dataset_cache")
 
             for i, data in tqdm(enumerate(dataset_iterator)):
                 if i == dataset_info["records_per_stage"][0]:
@@ -49,7 +51,7 @@ class WikiEn:
 
                 text_list.append(data["text"])
 
-            dataset_iterator.cleanup_cache_files()
+            rm_cache()
 
         return text_list
 
@@ -63,7 +65,7 @@ class CultureX:
             if stop_extract:
                 break
 
-            dataset_iterator = load_dataset(dataset_info["extension"], data_files=file_path, split="train")
+            dataset_iterator = load_dataset(dataset_info["extension"], data_files=file_path, split="train", cache_dir="./dataset_cache")
 
             for i, data in tqdm(enumerate(dataset_iterator)):
                 if i == dataset_info["records_per_stage"][0]:
@@ -72,7 +74,7 @@ class CultureX:
 
                 text_list.append(data["text"])
 
-            dataset_iterator.cleanup_cache_files()
+            rm_cache()
 
         return text_list
 
@@ -80,6 +82,17 @@ class CultureX:
 class SlimPajama:
     @classmethod
     def add_text_list(cls, text_list, dataset_info, output_dir, continue_process):
+        ratio = {
+            "RedPajamaCommonCrawl": 0.125,
+            "RedPajamaC4": 0.25,
+            "RedPajamaGithub": 0.1406,
+            "RedPajamaWikipedia": 0.0156,
+            "RedPajamaBook": 0.0938,
+            "RedPajamaArXiv": 0.25,
+            "RedPajamaStackExchange": 0.125,
+        }
+
+        """
         ratio = {
             "RedPajamaCommonCrawl": 0.67,
             "RedPajamaC4": 0.15,
@@ -89,6 +102,7 @@ class SlimPajama:
             "RedPajamaArXiv": 0.025,
             "RedPajamaStackExchange": 0.02,
         }
+        """
 
         """
         ratio = {
@@ -140,7 +154,7 @@ class SlimPajama:
             if stop_extract:
                 break
 
-            dataset_iterator = load_dataset("json", data_files=file_path, split="train")
+            dataset_iterator = load_dataset("json", data_files=file_path, split="train", cache_dir="./dataset_cache")
             print(file_path)
 
             for data in tqdm(dataset_iterator):
@@ -158,7 +172,7 @@ class SlimPajama:
                     print("all complete")
                     break
 
-            dataset_iterator.cleanup_cache_files()
+            rm_cache()
 
             processed_file_paths.append(file_path)
 

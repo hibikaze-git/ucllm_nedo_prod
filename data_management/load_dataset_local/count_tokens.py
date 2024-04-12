@@ -10,12 +10,14 @@ python count_tokens.py sp ./tokenizer.model ./data/0313wiki.jsonl jsonl json
 import argparse
 import glob
 import os
+import shutil
 
-from datasets import load_dataset, disable_caching
+from datasets import load_dataset
 from tqdm import tqdm
 
 
-disable_caching()
+def rm_cache():
+    shutil.rmtree("./dataset_cache")
 
 
 class HFTokenizer():
@@ -66,13 +68,13 @@ else:
 total_tokens = 0
 
 if os.path.isfile(args.file_or_dir):
-    dataset = load_dataset(args.file_type, data_files=args.file_or_dir, split="train")
+    dataset = load_dataset(args.file_type, data_files=args.file_or_dir, split="train", cache_dir="./dataset_cache")
 
     for data in dataset:
         n_tokens = len(tokenizer.tokenize(data["text"]))
         total_tokens += n_tokens
 
-    dataset.cleanup_cache_files()
+    rm_cache()
 
 elif os.path.isdir(args.file_or_dir):
     pattern = os.path.join(args.file_or_dir, f"**/*.{args.extension}")
@@ -82,13 +84,13 @@ elif os.path.isdir(args.file_or_dir):
 
     for file_path in tqdm(file_paths):
         print(file_path)
-        dataset = load_dataset(args.file_type, data_files=file_path, split="train")
+        dataset = load_dataset(args.file_type, data_files=file_path, split="train", cache_dir="./dataset_cache")
 
         for data in dataset:
             n_tokens = len(tokenizer.tokenize(data["text"]))
             total_tokens += n_tokens
 
-        dataset.cleanup_cache_files()
+        rm_cache()
 
         print("check_count:", total_tokens)
 
