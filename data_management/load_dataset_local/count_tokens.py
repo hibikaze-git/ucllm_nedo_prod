@@ -11,8 +11,11 @@ import argparse
 import glob
 import os
 
-from datasets import load_dataset
+from datasets import load_dataset, disable_caching
 from tqdm import tqdm
+
+
+disable_caching()
 
 
 class HFTokenizer():

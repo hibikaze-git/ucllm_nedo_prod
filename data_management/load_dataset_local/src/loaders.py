@@ -1,8 +1,11 @@
 import json
 
 from datetime import datetime
-from datasets import load_dataset
+from datasets import load_dataset, disable_caching
 from tqdm import tqdm
+
+
+disable_caching()
 
 
 class WikiJa:
