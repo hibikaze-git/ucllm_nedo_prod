@@ -72,6 +72,8 @@ if os.path.isfile(args.file_or_dir):
         n_tokens = len(tokenizer.tokenize(data["text"]))
         total_tokens += n_tokens
 
+    dataset.cleanup_cache_files()
+
 elif os.path.isdir(args.file_or_dir):
     pattern = os.path.join(args.file_or_dir, f"**/*.{args.extension}")
     file_paths = glob.glob(pattern, recursive=True)
@@ -85,6 +87,8 @@ elif os.path.isdir(args.file_or_dir):
         for data in dataset:
             n_tokens = len(tokenizer.tokenize(data["text"]))
             total_tokens += n_tokens
+
+        dataset.cleanup_cache_files()
 
         print("check_count:", total_tokens)
 

@@ -26,6 +26,8 @@ class WikiJa:
 
                 text_list.append(data["text"])
 
+            dataset_iterator.cleanup_cache_files()
+
         return text_list
 
 
@@ -47,6 +49,8 @@ class WikiEn:
 
                 text_list.append(data["text"])
 
+            dataset_iterator.cleanup_cache_files()
+
         return text_list
 
 
@@ -67,6 +71,8 @@ class CultureX:
                     break
 
                 text_list.append(data["text"])
+
+            dataset_iterator.cleanup_cache_files()
 
         return text_list
 
@@ -151,6 +157,8 @@ class SlimPajama:
                     stop_extract = True
                     print("all complete")
                     break
+
+            dataset_iterator.cleanup_cache_files()
 
             processed_file_paths.append(file_path)
 

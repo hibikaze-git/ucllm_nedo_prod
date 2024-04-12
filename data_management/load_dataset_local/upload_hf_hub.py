@@ -24,3 +24,5 @@ args = parser.parse_args()
 dataset = load_dataset("json", data_files=args.input_file, split="train")
 
 dataset.push_to_hub(args.repo_name)
+
+dataset.cleanup_cache_files()
