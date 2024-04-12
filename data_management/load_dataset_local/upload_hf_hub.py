@@ -15,8 +15,17 @@ from datasets import load_dataset
 def rm_cache():
     cache_path = "./dataset_cache"
     permissions = 0o777
-    os.chmod(cache_path, permissions)
-    shutil.rmtree(cache_path)
+
+    # 権限を再帰的に変更
+    for root, dirs, files in os.walk(cache_path):
+        for name in dirs:
+            dir_path = os.path.join(root, name)
+            os.chmod(dir_path, permissions)
+        for name in files:
+            file_path = os.path.join(root, name)
+            os.chmod(file_path, permissions)
+
+    shutil.rmtree(cache_path, ignore_errors=True)
 
 
 parser = argparse.ArgumentParser(
