@@ -17,7 +17,10 @@ from tqdm import tqdm
 
 
 def rm_cache():
-    shutil.rmtree("./dataset_cache")
+    cache_path = "./dataset_cache"
+    permissions = 0o777
+    os.chmod(cache_path, permissions)
+    shutil.rmtree(cache_path)
 
 
 class HFTokenizer():

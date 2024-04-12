@@ -6,13 +6,17 @@ python upload_hf_hub.py ./data/0313wiki.jsonl hibikaze/upload_test
 """
 
 import argparse
+import os
 import shutil
 
 from datasets import load_dataset
 
 
 def rm_cache():
-    shutil.rmtree("./dataset_cache")
+    cache_path = "./dataset_cache"
+    permissions = 0o777
+    os.chmod(cache_path, permissions)
+    shutil.rmtree(cache_path)
 
 
 parser = argparse.ArgumentParser(
