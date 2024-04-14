@@ -9,8 +9,12 @@ pip install faker
 pip install datasets transformers
 
 使い方の例
+(初回)
 python mask_personal_info.py ./hf_dataset/CulturaX/ja ./output parquet parquet
 python mask_personal_info.py /persistentshare/storage/team_haijima/dataset_pre/CulturaX/ja ./output parquet parquet
+
+(継続)
+python mask_personal_info.py /persistentshare/storage/team_haijima/dataset_pre/CulturaX/ja ./output parquet parquet -processed_dir ./output-0415
 """
 
 import argparse
@@ -89,7 +93,21 @@ def main(args):
     print("num_file_path:", len(file_paths))
     print(file_paths[:5])
 
-    for file_path in tqdm(file_paths):
+    target_file_paths = file_paths
+
+    if args.processed_dir is not None:
+        processed_file_suffix = "-mask_personal_info.jsonl"
+        processed_pattern = os.path.join(args.processed_dir, f"**/*.{args.extension}" + processed_file_suffix)
+        processed_file_paths = glob.glob(processed_pattern, recursive=True)
+        print(processed_file_paths[:5])
+
+        processed_file_name_list = [os.path.basename(processed_file_path) for processed_file_path in processed_file_paths]
+
+        target_file_paths = [file_path for file_path in file_paths if os.path.basename(file_path) + processed_file_suffix not in processed_file_name_list]
+
+    print(target_file_paths[:5])
+
+    for file_path in tqdm(target_file_paths):
         print(file_path)
         dataset = load_dataset(args.file_type, data_files=file_path, split="train", cache_dir="./dataset_cache")
 
@@ -102,7 +120,7 @@ def main(args):
         with Pool(num_cores) as pool:
             processed_texts = pool.map(process_text, dataset_list)
 
-        output_filename = f"{os.path.basename(file_path)}-mask_personal_info.jsonl"
+        output_filename = os.path.basename(file_path) + processed_file_suffix
         output_path = os.path.join(args.output_dir, output_filename)
 
         with open(output_path, "w") as f:
@@ -125,13 +143,19 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("input_dir", type=str)
-    parser.add_argument("output_dir", type=str)
-    parser.add_argument("extension", type=str)
-    parser.add_argument("file_type", type=str)
+    # 必須の引数
+    parser.add_argument("input_dir", type=str, help="Path to the input directory")
+    parser.add_argument("output_dir", type=str, help="Path to the output directory")
+    parser.add_argument("extension", type=str, help="File extension to process")
+    parser.add_argument("file_type", type=str, help="Type of file to process")
+
+    # 任意の引数
+    parser.add_argument("--processed_dir", type=str, default=None, help="Path to the directory for processed files")
 
     args = parser.parse_args()
 
+    # 出力ディレクトリの作成
     make_dir(args.output_dir)
 
+    # メイン関数の実行
     main(args)
