@@ -121,8 +121,6 @@ def main(args):
 
         rm_cache()
 
-        raise
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
