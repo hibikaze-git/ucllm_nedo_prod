@@ -14,7 +14,7 @@ python mask_personal_info.py ./hf_dataset/CulturaX/ja ./output parquet parquet
 python mask_personal_info.py /persistentshare/storage/team_haijima/dataset_pre/CulturaX/ja ./output parquet parquet
 
 (継続)
-python mask_personal_info.py /persistentshare/storage/team_haijima/dataset_pre/CulturaX/ja ./output parquet parquet -processed_dir ./output-0415
+python mask_personal_info.py /persistentshare/storage/team_haijima/dataset_pre/CulturaX/ja ./output parquet parquet --processed_dir ./output-0415
 """
 
 import argparse
