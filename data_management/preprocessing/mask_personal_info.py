@@ -94,9 +94,9 @@ def main(args):
     print(file_paths[:5])
 
     target_file_paths = file_paths
+    processed_file_suffix = "-mask_personal_info.jsonl"
 
     if args.processed_dir is not None:
-        processed_file_suffix = "-mask_personal_info.jsonl"
         processed_pattern = os.path.join(args.processed_dir, f"**/*.{args.extension}" + processed_file_suffix)
         processed_file_paths = glob.glob(processed_pattern, recursive=True)
         print(processed_file_paths[:5])
