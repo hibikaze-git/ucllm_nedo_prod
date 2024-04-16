@@ -50,6 +50,7 @@ def rm_cache(cache_path):
 
 def process_file(file_path, output_dir, processed_file_paths_path):
     print(file_path)
+    chunk = os.path.basename(os.path.dirname(file_path))
     filename = os.path.basename(file_path).replace(".jsonl.zst", "")
     domains = {separated_domain: [] for separated_domain in separated_domain_list}
 
@@ -64,7 +65,7 @@ def process_file(file_path, output_dir, processed_file_paths_path):
             domains[data["meta"]["redpajama_set_name"]].append(data)
 
     for set_name, items in domains.items():
-        output_filename = filename + "_" + set_name + ".jsonl"
+        output_filename = chunk + "_" + filename + "_" + set_name + ".jsonl"
         output_path = os.path.join(output_dir, set_name, output_filename)
         with open(output_path, "w") as f:
             for item in items:
