@@ -15,6 +15,8 @@ from tqdm import tqdm
 from multiprocessing import Pool
 
 
+CACHE_PATH = "./dataset_cache"
+
 separated_domain_list = [
     #"RedPajamaCommonCrawl",
     #"RedPajamaC4",
@@ -31,8 +33,7 @@ def make_dir(path):
         os.mkdir(path)
 
 
-def rm_cache():
-    cache_path = "./dataset_cache"
+def rm_cache(cache_path):
     permissions = 0o777
 
     # 権限を再帰的に変更
@@ -52,7 +53,10 @@ def process_file(file_path, output_dir, processed_file_paths_path):
     filename = os.path.basename(file_path).replace(".jsonl.zst", "")
     domains = {separated_domain: [] for separated_domain in separated_domain_list}
 
-    dataset = load_dataset("json", data_files=file_path, split="train", cache_dir="./dataset_cache")
+    pid = os.getpid()
+    cache_dir = os.path.join(CACHE_PATH, f"dataset_cache_{pid}")
+
+    dataset = load_dataset("json", data_files=file_path, split="train", cache_dir=cache_dir)
 
     for data in dataset:
         set_name = data["meta"]["redpajama_set_name"]
@@ -69,7 +73,7 @@ def process_file(file_path, output_dir, processed_file_paths_path):
     with open(processed_file_paths_path, "a") as f:
         f.write(file_path + "\n")
 
-    rm_cache()
+    rm_cache(cache_dir)
 
 
 def main(args):
