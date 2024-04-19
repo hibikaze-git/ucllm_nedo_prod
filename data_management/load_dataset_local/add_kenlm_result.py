@@ -1,7 +1,7 @@
 """
 KenLMによる品質スコアリング
 
-python add_kenlm_result.py ./hf_dataset/CultureX/ja ./output
+python add_kenlm_result.py ./hf_dataset/CultureX/ja ./output jsonl json
 
 kenlmの環境構築が必要
 https://github.com/lighttransport/japanese-llama-experiment
@@ -52,12 +52,12 @@ def process_file(file_path, output_dir, processed_file_paths_path):
     tagger = Tagger('-Owakati')
 
     print(file_path)
-    filename = os.path.basename(file_path).replace(".parquet", "")
+    filename = os.path.basename(file_path).replace(f".{args.extension}", "")
 
     pid = os.getpid()
     cache_dir = os.path.join(CACHE_PATH, f"dataset_cache_{pid}")
 
-    dataset = load_dataset("parquet", data_files=file_path, split="train", cache_dir=cache_dir)
+    dataset = load_dataset(args.file_type, data_files=file_path, split="train", cache_dir=cache_dir)
 
     output_filename = filename + "_kenlm.jsonl"
     output_path = os.path.join(output_dir, output_filename)
@@ -85,7 +85,7 @@ def process_file(file_path, output_dir, processed_file_paths_path):
 
 
 def main(args):
-    pattern = os.path.join(args.input_dir, "**/*.parquet")
+    pattern = os.path.join(args.input_dir, f"**/*.{args.extension}")
     file_paths = glob.glob(pattern, recursive=True)
     print("num_file_path:", len(file_paths))
     print(file_paths[:5])
@@ -127,6 +127,8 @@ if __name__ == "__main__":
     # 必須の引数
     parser.add_argument("input_dir", type=str, help="Path to the input directory")
     parser.add_argument("output_dir", type=str, help="Path to the output directory")
+    parser.add_argument("extension", type=str, help="file extension")
+    parser.add_argument("file_type", type=str, help="file extension for load_datast")
 
     args = parser.parse_args()
 
