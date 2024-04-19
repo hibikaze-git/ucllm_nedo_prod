@@ -1,7 +1,7 @@
 """
 KenLMによる品質スコアリング
 
-python add_kenlm_result.py ./hf_dataset/CultureX/ja ./output jsonl json
+python add_kenlm_result.py ./hf_dataset/CultureX/ja ./output jsonl json 8
 
 kenlmの環境構築が必要
 https://github.com/lighttransport/japanese-llama-experiment
@@ -114,7 +114,10 @@ def main(args):
 
     print(target_file_paths[:5])
 
-    with Pool(processes=os.cpu_count()) as pool:
+    num_process = int(args.num_process)
+    #num_process = os.cpu_count()
+
+    with Pool(processes=num_process) as pool:
         results = pool.starmap(process_file, [(path, args.output_dir, processed_file_paths_path) for path in target_file_paths])
 
 
@@ -129,6 +132,7 @@ if __name__ == "__main__":
     parser.add_argument("output_dir", type=str, help="Path to the output directory")
     parser.add_argument("extension", type=str, help="file extension")
     parser.add_argument("file_type", type=str, help="file extension for load_datast")
+    parser.add_argument("num_process", type=str, help="num process")
 
     args = parser.parse_args()
 
