@@ -1,0 +1,4 @@
+100
+./output/train-00000-of-00008.jsonl ./extract/output1.jsonl 0.2
+./output/train-00001-of-00008.jsonl ./extract/output2.jsonl 0.5
+./output/train-00002-of-00008.jsonl ./extract/output3.jsonl 0.3
