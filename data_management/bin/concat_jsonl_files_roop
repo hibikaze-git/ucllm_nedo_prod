@@ -1,0 +1,16 @@
+#!/bin/bash
+
+input_dir=$1
+output_dir=$2
+
+# 出力ディレクトリが存在することを確認
+mkdir -p "${output_dir}"
+
+# 空のファイルから開始
+> "${output_dir}/merged.jsonl"
+
+# 入力ディレクトリ内の各 .jsonl ファイルをループし、マージされたファイルに追加します
+for file in "${input_dir}"/*.jsonl; do
+    cat "$file" >> "${output_dir}/merged.jsonl"
+done
+
