@@ -1,5 +1,5 @@
 """
-arrow→jsonl化
+parquet→jsonl化
 
 .parquetファイルの名称に重複がないか確認が必要
 
@@ -41,19 +41,19 @@ def rm_cache(cache_path):
 
 def process_file(file_path, output_dir, processed_file_paths_path):
     print(file_path)
-    filename = os.path.basename(file_path).replace(".arrow", "")
+    filename = os.path.basename(file_path).replace(".parquet", "")
 
     pid = os.getpid()
     cache_dir = os.path.join(CACHE_PATH, f"dataset_cache_{pid}")
 
-    dataset = load_dataset("arrow", data_files=file_path, split="train", cache_dir=cache_dir)
+    dataset = load_dataset("parquet", data_files=file_path, split="train", cache_dir=cache_dir)
 
     output_filename = filename + ".jsonl"
     output_path = os.path.join(output_dir, output_filename)
 
     with open(output_path, "w") as f:
         for i, data in enumerate(dataset):
-            f.write(json.dumps({"text": data["発言内容"]}, ensure_ascii=False) + "\n")
+            f.write(json.dumps({"text": data["train"]}, ensure_ascii=False) + "\n")
 
     with open(processed_file_paths_path, "a") as f:
         f.write(file_path + "\n")
@@ -62,7 +62,7 @@ def process_file(file_path, output_dir, processed_file_paths_path):
 
 
 def main(args):
-    pattern = os.path.join(args.input_dir, "**/*.arrow")
+    pattern = os.path.join(args.input_dir, "**/*.parquet")
     file_paths = glob.glob(pattern, recursive=True)
     print("num_file_path:", len(file_paths))
     print(file_paths[:5])
